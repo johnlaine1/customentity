@@ -1,0 +1,268 @@
+<?php
+/**
+ * @file
+ * Provides a custom entity type name 'ect'.
+ */
+
+/**
+ * Implements hook_entity_info().
+ */
+function ect_entity_info() {
+  $info = array();
+  // The custom ect entity is defined here.
+  // See http://drupal.org/node/1026420 and http://drupal.org/node/878804
+  // for more documentation.
+  $info['ect'] = array(
+    // Human readable label
+    'label' => t('ECT'),
+    // Table for storing entity data, defined in hook_schema().
+    'base table' => 'ect',
+    // This helps Entity API know how to query the custom table.
+    'entity keys' => array(
+      'id' => 'id',
+      'label' => 'label',
+    ),
+    // A simple wrapper around the uri mehtod in the controller class.
+    'uri callback' => 'entity_class_uri',
+    // Default class is 'Entity',
+    'entity class' => 'ECTEntity',
+    // Default class is 'EntityAPIController',
+    'controller class' => 'ECTEntityController',
+    // The information below is used to extend the EntityDefaultUIController.
+    'admin ui' => array(
+      'path' => 'admin/structure/ect',
+      'controller class' => 'ECTEntityUIController',
+      'menu wildcard' => '%ect',
+      'file' => 'ect.admin.inc',
+    ),
+    'module' => 'ect',
+    // This controls who can access entity CRUD.
+    'access callback' => 'ect_access',
+    'fieldable' => TRUE,
+    'bundles' => array(
+      'ect' => array(
+        'label' => t('ECT'),
+        'admin' => array(
+          'path' => 'admin/structure/ect',
+          'access arguments' => array('administer ect'),
+        ),
+      ),
+    ),
+    'views controller class' => 'EntityDefaultViewsController',
+    'view modes' => array(
+      'custom_view1' => array(
+        'label' => t('Custom View 1'),
+        'custom settings' => FALSE,
+      ),      
+    ),
+  );
+  return $info;
+}
+
+/**
+ * Implements hook_entity_property_info().
+ */
+function ect_entity_property_info() {
+  $info = array();
+  $properties = &$info['ect']['properties'];
+  $properties['id'] = array(
+    'label' => t('EID'),
+    'description' => t('The unique, numeric, internal ID of the ECT entity.'),
+    'type' => 'integer',
+    'schema field' => 'id',
+  );
+  $properties['label'] = array(
+    'label' => t('ECT entity ID'),
+    'description' => t('The unique human readable ID of the ECT entity.'),
+    'type' => 'text',
+    'schema field' => 'label',
+  );
+  $properties['created'] = array(
+    'label' => t('Created date'),
+    'description' => t('The date the ECT entity was created.'),
+    'type' => 'date',
+    'schema field' => 'created',
+  );
+  $properties['updated'] = array(
+    'label' => t('Updated date'),
+    'description' => t('The date the ECT entity was last updated.'),
+    'type' => 'date',
+    'schema field' => 'updated',
+  );
+  return $info;
+}
+/**
+ * Implements hook_menu().
+ */
+function ect_menu() {
+  $items = array();
+  // Testing purposes.
+  $items['ect_entity'] = array(
+    'title' => 'ECT Demo page',
+    'page callback' => 'ect_demo_page',
+    'access callback' => TRUE,
+    'menu' => 'navigation',
+  );
+  $items['ect/%ect'] = array(
+    'title' => 'ECT entity',
+    'page callback' => 'ect_view_entity',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+/**
+ * Menu autoloader for /ect/%ect.
+ */
+function ect_load($id) {
+  $ect = entity_load('ect', array($id));
+  return array_pop($ect);
+}
+
+/**
+ * Callback for /ect-entity.
+ *
+ * This is for testing purposes and can be deleted if no longer needed.
+ */
+function ect_demo_page() {
+  // Load and display an entity (don't forget to add one to the database first).
+  $ect = entity_load('ect', array(1));
+  dsm($ect);
+
+  return 'Have to return something or the page won\'t show up';
+}
+
+/**
+ * Callback for /ect/ID page.
+ *
+ * A place to render a complete video entity.
+ */
+function ect_view_entity($ect) {
+  // Use any of the view modes defined in hook_entity_info().
+  $viewmode = 'full'; 
+  drupal_set_title($ect->label);
+  $ect_entity = entity_view('ect', array($ect->id => $ect), $viewmode);
+  dsm($ect_entity);
+  return $ect_entity;
+}
+
+/**
+ * Access callback for ect CRUD operations.
+ */
+function ect_access($op, $ect = NULL, $account = NULL) {
+  if (($op == 'view' && user_access('view ect', $account)) || user_access('administer ect', $account)) {
+    return TRUE;
+  }
+  else if (user_access('administer ect', $account)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function ect_permission() {
+  return array(
+    'view ect' => array(
+      'title' => t('View ECT Entities'),      
+    ),
+    'administer ect' => array(
+      'title' => t('Administer ECT Entities'),
+    ),
+  );
+}
+/**
+ * Custom entity class.
+ * The class being overriden is located in:
+ * sites/all/modules/contrib/entity/includes/entity.inc
+ */
+class ECTEntity extends Entity{
+  /**
+   * Override this in order to implement a custom default URI.
+   */
+  protected function defaultUri() {
+    return array('path' => 'ect/' . $this->identifier());
+  }
+}
+
+/**
+ * Our custom controller for the ect type.
+ *
+ * We're choosing to extend the controller provided by the entity module for
+ * full CRUD support for ect.
+ *
+ * The EntityAPIController is found in
+ * sites/all/modules/contrib/entity/includes/entity.controller.inc
+ */
+class ECTEntityController extends EntityAPIController {
+  public function buildContent($entity, $view_mode = 'full', $langcode = NULL, $content = array()) {
+    $build = parent::buildContent($entity, $view_mode, $langcode, $content);
+    // Build page here using render arrays.
+    $build['id'] = array(
+      '#type' => 'markup',
+      '#markup' => 'The id of this entity is ' . $entity->id . '<br>',
+    );
+    $build['label'] = array(
+      '#type' => 'markup',
+      '#markup' => 'The label of this entity is ' . $entity->label . '<br>',
+    );
+    $build['created'] = array(
+      '#type' => 'markup',
+      '#markup' => 'This entity was created on ' . date('m-d-Y', $entity->created) . '<br>',
+    );
+    $build['updated'] = array(
+      '#type' => 'markup',
+      '#markup' => 'This entity was last updated on ' . date('m-d-Y', $entity->updated) . '<br>',
+    );
+    
+    if ($view_mode == 'custom_view1') {
+      $build['custom_view1'] = array(
+        '#type' => 'markup',
+        '#markup' => 'This is Custom View 1',
+      );
+    }
+    
+    return $build;
+  }
+  
+  /**
+   * Override save method.
+   *
+   * Populate created and updated dates automatically.
+   */
+  public function save($entity, DatabaseTransaction $transaction = NULL) {
+    if (isset($entity->is_new)) {
+      $entity->created = REQUEST_TIME;
+    }
+    
+    $entity->updated = REQUEST_TIME;
+    
+    return parent::save($entity, $transaction);
+  }
+}
+
+/**
+ * Our custom controller for the admin ui.
+ *
+ * The EntityDefaultUIController can be found in
+ * sites/all/modules/contrib/entity/includes/entity.ui.inc
+ */
+class ECTEntityUIController extends EntityDefaultUIController {
+ /**
+   * Generates the table headers for the overview table.
+   */
+  protected function overviewTableHeaders($conditions, $rows, $additional_header = array()) {
+    $header = $additional_header;
+    array_unshift($header, t('ECT'));
+    if (!empty($this->entityInfo['exportable'])) {
+      $header[] = t('Status');
+    }
+    // Add operations with the right colspan.
+    $header[] = array('data' => t('Operations'), 'colspan' => $this->operationCount());
+    return $header;
+  }
+
+}
+
