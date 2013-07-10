@@ -1,22 +1,22 @@
 <?php
 /**
  * @file
- * Provides a custom entity type name 'ect'.
+ * Provides a custom entity type name 'item'.
  */
 
 /**
  * Implements hook_entity_info().
  */
-function ect_entity_info() {
+function item_entity_info() {
   $info = array();
-  // The custom ect entity is defined here.
+  // The custom item entity is defined here.
   // See http://drupal.org/node/1026420 and http://drupal.org/node/878804
   // for more documentation.
-  $info['ect'] = array(
+  $info['item'] = array(
     // Human readable label
-    'label' => t('ECT'),
+    'label' => t('Item'),
     // Table for storing entity data, defined in hook_schema().
-    'base table' => 'ect',
+    'base table' => 'item',
     // This helps Entity API know how to query the custom table.
     'entity keys' => array(
       'id' => 'id',
@@ -25,26 +25,26 @@ function ect_entity_info() {
     // A simple wrapper around the uri mehtod in the controller class.
     'uri callback' => 'entity_class_uri',
     // Default class is 'Entity',
-    'entity class' => 'ECTEntity',
+    'entity class' => 'ItemEntity',
     // Default class is 'EntityAPIController',
-    'controller class' => 'ECTEntityController',
+    'controller class' => 'ItemEntityController',
     // The information below is used to extend the EntityDefaultUIController.
     'admin ui' => array(
-      'path' => 'admin/structure/ect',
-      'controller class' => 'ECTEntityUIController',
-      'menu wildcard' => '%ect',
-      'file' => 'ect.admin.inc',
+      'path' => 'admin/structure/item',
+      'controller class' => 'ItemEntityUIController',
+      'menu wildcard' => '%item',
+      'file' => 'item.admin.inc',
     ),
-    'module' => 'ect',
+    'module' => 'item',
     // This controls who can access entity CRUD.
-    'access callback' => 'ect_access',
+    'access callback' => 'item_access',
     'fieldable' => TRUE,
     'bundles' => array(
-      'ect' => array(
-        'label' => t('ECT'),
+      'item' => array(
+        'label' => t('Item'),
         'admin' => array(
-          'path' => 'admin/structure/ect',
-          'access arguments' => array('administer ect'),
+          'path' => 'admin/structure/item',
+          'access arguments' => array('administer item'),
         ),
       ),
     ),
@@ -62,30 +62,30 @@ function ect_entity_info() {
 /**
  * Implements hook_entity_property_info().
  */
-function ect_entity_property_info() {
+function item_entity_property_info() {
   $info = array();
-  $properties = &$info['ect']['properties'];
+  $properties = &$info['item']['properties'];
   $properties['id'] = array(
     'label' => t('EID'),
-    'description' => t('The unique, numeric, internal ID of the ECT entity.'),
+    'description' => t('The unique, numeric, internal ID of the item entity.'),
     'type' => 'integer',
     'schema field' => 'id',
   );
   $properties['label'] = array(
-    'label' => t('ECT entity ID'),
-    'description' => t('The unique human readable ID of the ECT entity.'),
+    'label' => t('Item entity ID'),
+    'description' => t('The unique human readable ID of the item entity.'),
     'type' => 'text',
     'schema field' => 'label',
   );
   $properties['created'] = array(
     'label' => t('Created date'),
-    'description' => t('The date the ECT entity was created.'),
+    'description' => t('The date the item entity was created.'),
     'type' => 'date',
     'schema field' => 'created',
   );
   $properties['updated'] = array(
     'label' => t('Updated date'),
-    'description' => t('The date the ECT entity was last updated.'),
+    'description' => t('The date the item entity was last updated.'),
     'type' => 'date',
     'schema field' => 'updated',
   );
@@ -94,18 +94,18 @@ function ect_entity_property_info() {
 /**
  * Implements hook_menu().
  */
-function ect_menu() {
+function item_menu() {
   $items = array();
   // Testing purposes.
-  $items['ect_entity'] = array(
-    'title' => 'ECT Demo page',
-    'page callback' => 'ect_demo_page',
+  $items['item_entity'] = array(
+    'title' => 'Item Demo page',
+    'page callback' => 'item_demo_page',
     'access callback' => TRUE,
     'menu' => 'navigation',
   );
-  $items['ect/%ect'] = array(
-    'title' => 'ECT entity',
-    'page callback' => 'ect_view_entity',
+  $items['item/%item'] = array(
+    'title' => 'Item entity',
+    'page callback' => 'item_view_entity',
     'page arguments' => array(1),
     'access callback' => TRUE,
   );
@@ -113,48 +113,48 @@ function ect_menu() {
 }
 
 /**
- * Menu autoloader for /ect/%ect.
+ * Menu autoloader for /item/%item.
  */
-function ect_load($id) {
-  $ect = entity_load('ect', array($id));
-  return array_pop($ect);
+function item_load($id) {
+  $item = entity_load('item', array($id));
+  return array_pop($item);
 }
 
 /**
- * Callback for /ect-entity.
+ * Callback for /item-entity.
  *
  * This is for testing purposes and can be deleted if no longer needed.
  */
-function ect_demo_page() {
+function item_demo_page() {
   // Load and display an entity (don't forget to add one to the database first).
-  $ect = entity_load('ect', array(1));
-  dsm($ect);
+  $item = entity_load('item', array(1));
+  dsm($item);
 
   return 'Have to return something or the page won\'t show up';
 }
 
 /**
- * Callback for /ect/ID page.
+ * Callback for /item/ID page.
  *
  * A place to render a complete video entity.
  */
-function ect_view_entity($ect) {
+function item_view_entity($item) {
   // Use any of the view modes defined in hook_entity_info().
   $viewmode = 'full'; 
-  drupal_set_title($ect->label);
-  $ect_entity = entity_view('ect', array($ect->id => $ect), $viewmode);
-  dsm($ect_entity);
-  return $ect_entity;
+  drupal_set_title($item->label);
+  $item_entity = entity_view('item', array($item->id => $item), $viewmode);
+  dsm($item_entity);
+  return $item_entity;
 }
 
 /**
- * Access callback for ect CRUD operations.
+ * Access callback for item CRUD operations.
  */
-function ect_access($op, $ect = NULL, $account = NULL) {
-  if (($op == 'view' && user_access('view ect', $account)) || user_access('administer ect', $account)) {
+function item_access($op, $item = NULL, $account = NULL) {
+  if (($op == 'view' && user_access('view item', $account)) || user_access('administer item', $account)) {
     return TRUE;
   }
-  else if (user_access('administer ect', $account)) {
+  else if (user_access('administer item', $account)) {
     return TRUE;
   }
   return FALSE;
@@ -163,40 +163,40 @@ function ect_access($op, $ect = NULL, $account = NULL) {
 /**
  * Implements hook_permission().
  */
-function ect_permission() {
+function item_permission() {
   return array(
-    'view ect' => array(
-      'title' => t('View ECT Entities'),      
+    'view item' => array(
+      'title' => t('View item Entities'),      
     ),
-    'administer ect' => array(
-      'title' => t('Administer ECT Entities'),
+    'administer item' => array(
+      'title' => t('Administer item Entities'),
     ),
   );
 }
 /**
- * Custom entity class.
+ * Custom entity class for the item type.
  * The class being overriden is located in:
  * sites/all/modules/contrib/entity/includes/entity.inc
  */
-class ECTEntity extends Entity{
+class ItemEntity extends Entity {
   /**
    * Override this in order to implement a custom default URI.
    */
   protected function defaultUri() {
-    return array('path' => 'ect/' . $this->identifier());
+    return array('path' => 'item/' . $this->identifier());
   }
 }
 
 /**
- * Our custom controller for the ect type.
+ * Our custom controller for the item type.
  *
  * We're choosing to extend the controller provided by the entity module for
- * full CRUD support for ect.
+ * full CRUD support for item.
  *
  * The EntityAPIController is found in
  * sites/all/modules/contrib/entity/includes/entity.controller.inc
  */
-class ECTEntityController extends EntityAPIController {
+class ItemEntityController extends EntityAPIController {
   public function buildContent($entity, $view_mode = 'full', $langcode = NULL, $content = array()) {
     $build = parent::buildContent($entity, $view_mode, $langcode, $content);
     // Build page here using render arrays.
@@ -249,13 +249,13 @@ class ECTEntityController extends EntityAPIController {
  * The EntityDefaultUIController can be found in
  * sites/all/modules/contrib/entity/includes/entity.ui.inc
  */
-class ECTEntityUIController extends EntityDefaultUIController {
+class ItemEntityUIController extends EntityDefaultUIController {
  /**
    * Generates the table headers for the overview table.
    */
   protected function overviewTableHeaders($conditions, $rows, $additional_header = array()) {
     $header = $additional_header;
-    array_unshift($header, t('ECT'));
+    array_unshift($header, t('Item'));
     if (!empty($this->entityInfo['exportable'])) {
       $header[] = t('Status');
     }

@@ -1,38 +1,38 @@
 <?php
 /**
  * @file
- * Installation and schema hooks for ect.module.
+ * Installation and schema hooks for item.module.
  */
 
 /**
  * Implements hook_schema().
  */
-function ect_schema() {
+function item_schema() {
   $schema = array();
-  // The table for the ect entity type.
-  $schema['ect'] = array(
-    'description' => 'The base table for the ECT entity',
+  // The table for the item entity type.
+  $schema['item'] = array(
+    'description' => 'The base table for the Item entity',
     'fields' => array(
       'id' => array(
-        'description' => 'Primary key of the ECT entity',
+        'description' => 'Primary key of the Item entity',
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
       'label' => array(
-        'description' => 'Human readable label for an ECT entity',
+        'description' => 'Human readable label for an Item entity',
         'type' => 'varchar',
         'length' => '255',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => 'Timestamp of when the ECT entity was created',
+        'description' => 'Timestamp of when the item entity was created',
         'type' => 'int',
         'length' => 10,
         'not null' => FALSE,
       ),
       'updated' => array(
-        'description' => 'Timestamp of when the ECT entity was last updated',
+        'description' => 'Timestamp of when the item entity was last updated',
         'type' => 'int',
         'length' => 10,
         'not null' => FALSE,
