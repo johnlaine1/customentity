@@ -26,7 +26,7 @@ function item_form($form, &$form_state, $item) {
     '#type' => 'actions',
     'submit' => array(
       '#type' => 'submit',
-      '#value' => isset($item->id) ? t('Update Entity') : t('Save Entity'),
+      '#value' => isset($item->id) ? t('Update Item') : t('Save Item'),
     ),
   );
   return $form;  
