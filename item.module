@@ -96,13 +96,6 @@ function item_entity_property_info() {
  */
 function item_menu() {
   $items = array();
-  // Testing purposes.
-  $items['item_demo'] = array(
-    'title' => 'Item Demo page',
-    'page callback' => 'item_demo_page',
-    'access callback' => TRUE,
-    'menu' => 'navigation',
-  );
   $items['item/%item'] = array(
     'title' => 'Item entity',
     'page callback' => 'item_view_entity',
@@ -121,19 +114,6 @@ function item_load($id) {
 }
 
 /**
- * Callback for /item-entity.
- *
- * This is for testing purposes and can be deleted if no longer needed.
- */
-function item_demo_page() {
-  // Load and display an entity (don't forget to add one to the database first).
-  $item = entity_load('item', array(1));
-  dsm($item);
-
-  return 'Have to return something or the page won\'t show up';
-}
-
-/**
  * Callback for /item/ID page.
  *
  * A place to render a complete video entity.
@@ -142,9 +122,10 @@ function item_view_entity($item) {
   // Use any of the view modes defined in hook_entity_info().
   $viewmode = 'full'; 
   drupal_set_title($item->label);
-  $item_entity = entity_view('item', array($item->id => $item), $viewmode);
-  dsm($item_entity);
-  return $item_entity;
+  $item_view = entity_view('item', array($item->id => $item), $viewmode);
+  dsm($item, 'The results from entity_load()');
+  dsm($item_view, 'The results from entity_view()');
+  return $item_view;
 }
 
 /**
