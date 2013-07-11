@@ -97,7 +97,7 @@ function item_entity_property_info() {
 function item_menu() {
   $items = array();
   // Testing purposes.
-  $items['item_entity'] = array(
+  $items['item_demo'] = array(
     'title' => 'Item Demo page',
     'page callback' => 'item_demo_page',
     'access callback' => TRUE,
