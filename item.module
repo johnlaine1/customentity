@@ -22,7 +22,7 @@ function item_entity_info() {
       'id' => 'id',
       'label' => 'label',
     ),
-    // A simple wrapper around the uri mehtod in the controller class.
+    // A simple wrapper around the uri method in the controller class.
     'uri callback' => 'entity_class_uri',
     // Default class is 'Entity',
     'entity class' => 'ItemEntity',
