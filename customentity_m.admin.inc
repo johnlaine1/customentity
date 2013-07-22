@@ -5,7 +5,7 @@
  */
 
 /**
- * Form for adding or editing a Customentity_m entity.
+ * Form for adding or editing a customentity_m entity.
  *
  * The name of the form function is constructed as follows:
  * [entity machine name]_form.
