@@ -18,7 +18,7 @@ HUMAN
   This will show up on UI's and other places, can have spaces.
   
 Rename the .info, .install, .module, admin.inc files to your machine name.
-eg. customentity.info = my_module.info
+eg. customentity_m.info = my_module.info
 
 Search within the: .info, .install, .module, .admin.inc for the tokens listed
 below and replace them with the corresponding name you have chosen.
