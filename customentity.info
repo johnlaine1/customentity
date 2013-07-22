@@ -1,6 +1,0 @@
-name = CustomEntity
-description = A module to assist in the creation of custom entities.
-core = 7.x
-package = Development
-dependencies[] = entity
-dependencies[] = devel
