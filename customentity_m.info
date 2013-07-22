@@ -1,5 +1,5 @@
-name = CustomEntity
-description = A module to assist in the creation of custom entities.
+name = customentity_h
+description = A custom entity type named customentity_h
 core = 7.x
 package = Development
 dependencies[] = entity
