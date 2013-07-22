@@ -1,38 +1,38 @@
 <?php
 /**
  * @file
- * Installation and schema hooks for customentity.module.
+ * Installation and schema hooks for customentity_m.module.
  */
 
 /**
  * Implements hook_schema().
  */
-function customentity_schema() {
+function customentity_m_schema() {
   $schema = array();
-  // The table for the CustomEntity entity type.
-  $schema['customentity'] = array(
-    'description' => 'The base table for the CustomEntity entity',
+  // The table for the Customentity_m entity type.
+  $schema['customentity_m'] = array(
+    'description' => 'The base table for the Customentity_m entity',
     'fields' => array(
       'id' => array(
-        'description' => 'Primary key of the CustomEntity entity',
+        'description' => 'Primary key of the Customentity_m entity',
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
       'label' => array(
-        'description' => 'Human readable label for an CustomEntity entity',
+        'description' => 'Human readable label for an Customentity_m entity',
         'type' => 'varchar',
         'length' => '255',
         'not null' => TRUE,
       ),
       'created' => array(
-        'description' => 'Timestamp of when the CustomEntity entity was created',
+        'description' => 'Timestamp of when the Customentity_m entity was created',
         'type' => 'int',
         'length' => 10,
         'not null' => FALSE,
       ),
       'updated' => array(
-        'description' => 'Timestamp of when the CustomEntity entity was last updated',
+        'description' => 'Timestamp of when the Customentity_m entity was last updated',
         'type' => 'int',
         'length' => 10,
         'not null' => FALSE,
