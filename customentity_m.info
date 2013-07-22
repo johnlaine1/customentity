@@ -1,6 +1,6 @@
 name = customentity_h
-description = A custom entity type named customentity_h
+description = A custom entity type. Machine name = customentity_m, Human name = customentity_h
 core = 7.x
-package = Development
+package = Custom Entity
 dependencies[] = entity
 dependencies[] = devel
