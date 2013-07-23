@@ -1,6 +1,19 @@
 Entity Construction Template
 -----------------------------
 
+Go to the location in the file structure where you would like this module.
+
+clone the repo like so:
+git@github.com:johnlaine1/customentity.git [folder name]
+
+The [folder name] is optional, if you ommit it, git will create a folder
+named "customentity".
+
+cd into the folder you just created and type:
+sudo rm -R .git
+This will remove all git metadata, obviously don't do this if you want this
+to be a separate repo, but you probably don't.
+
 
 Choose the 3 different names for your custom entity
 
