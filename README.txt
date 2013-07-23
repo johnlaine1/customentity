@@ -29,3 +29,5 @@ customentity_o = The OOP machine name of the entity
   
 customentity_h = The HUMAN readable name of the entity
   
+When finished and all is working correctly, delete the contents of this README
+file and add appropriate documentation for your module.
